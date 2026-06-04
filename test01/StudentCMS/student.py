@@ -24,8 +24,4 @@ class Student:
         """
         :return:
         """
-        return f"{self.name} {self.gender} {self.age} {self.phone} {self.desc}"
-
-if __name__ == '__main__':
-    s = Student("1","2","3","4","5")
-    print(s)
+        return f"学生姓名：{self.name}, 学生性别：{self.gender}, 学生年龄：{self.age}, 学生手机号：{self.phone}, 描述信息： {self.desc}"
