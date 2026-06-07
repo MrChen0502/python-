@@ -18,7 +18,7 @@ import socket
 # 1.创建服务器端Socket对象
 server_socket = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
 # 2.绑定ip 和 端口号
-server_socket.bind(('127.0.0.1' , 10000))
+server_socket.bind(('127.0.0.1' , 8888))
 # 3，设置最大监听数
 server_socket.listen(5)
 # 4，等待客户端申请建立连接
@@ -34,7 +34,8 @@ with open('./data/my.txt', 'wb') as dest_f:
         if len(bys) == 0:
             break
         # 5.5 把读取到的数据写入到目的地文件中
+        dest_f.write(bys)
 # 6.把读取的数据写道目的地文件中
-accept_socket.send('文件上传成功'.encode('utf-8'))
+# accept_socket.send('文件上传成功'.encode('utf-8'))
 # 7，释放资源
 accept_socket.close()
