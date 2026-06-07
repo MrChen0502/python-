@@ -34,3 +34,7 @@ print(f"收到客户端消息：{data}")
 print(f"客户端地址：{client_info}")
 # 7.释放资源
 accept_socket.close()
+
+# 扩展：设置端口号重用 目的是：快速重启服务器(服务器关闭后 立即释放端口)
+# 参1：当前的套接字对象 参2：选项名 参3：该选项的值
+server_socket.setsockopt(socket.SOL_SOCKET , socket.SO_REUSEADDR , True)
