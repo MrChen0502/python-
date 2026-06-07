@@ -25,7 +25,7 @@ server_socket.listen(5)
 accept_socket , client_info = server_socket.accept()
 # 5，读取客户端上传的(文件)数据
 # 5.1 关联目的地文件
-with open('./data/my.txt', 'wb') as dest_f:
+with open('./data/my.jpg', 'wb') as dest_f:
     # 5.2循环读取数据
     while True:
         # 5.3 接收客户端上传的文件数据

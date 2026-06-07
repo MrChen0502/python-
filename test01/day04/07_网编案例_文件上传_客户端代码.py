@@ -16,7 +16,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # 2.连接服务器端的ip 和 端口号
 client_socket.connect(('127.0.0.1', 8888))
 # 3，关联数据源文件 读取内容 写给服务器端
-with open('d:/11.txt','rb') as src_f:
+with open('d:/屏幕截图(385).png','rb') as src_f:
     # 3.2 循环读取内容
     while True:
         # 3.3 具体的读取操作
