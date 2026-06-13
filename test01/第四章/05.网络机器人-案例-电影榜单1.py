@@ -1,8 +1,10 @@
 import requests
 import csv
 from lxml import html
+from urllib3.filepost import writer
 
 # 常量(在python中，一般定义为全部字母大写)
+MOVIE_LIST_FILE = "csv_data/movie_list.csv"
 TMDB_BASE_URL = "https://www.themoviedb.org"
 TMDB_TOP_URL = "https://www.themoviedb.org/movie/top-rated"
 
@@ -19,6 +21,7 @@ TMDB_TOP_URL = "https://www.themoviedb.org/movie/top-rated"
 def get_movie_info(movie_info_url):
     # 1.发送请求 获取电影详情数据
     movie_response = requests.get(movie_info_url , timeout=60)
+    print(f"发送请求{movie_info_url} 获取电影详情数据......")
 
     # 2.解析数据 获取电影详情
     movie_doc = html.fromstring(movie_response.text)
@@ -87,12 +90,16 @@ def get_movie_info(movie_info_url):
         "宣传语" : movie_slogan[0].strip() if movie_slogan else '',
         "简介" : movie_descriptions[0].strip() if movie_descriptions else '',
     }
-    print(movie_info)
+    # print(movie_info)
     return movie_info
 
 # 保存电影数据 保存为csv文件
 def save_all_movies(all_movies):
-    pass
+    with open(MOVIE_LIST_FILE , "w" , encoding="utf-8" , newline="")as csvfile:
+        writer =  csv.DictWriter(csvfile , fieldnames=["电影名","年份","上映时间","类型","电影时长","评分","语言","导演","作者","宣传语","简介"])
+        writer.writeheader()            # 写入表头
+        writer.writerows(all_movies)    # 写入数据
+
 
 
 # 主函数 定义核心逻辑
@@ -100,6 +107,7 @@ def main():
     # 1.发送请求 获取高分电影榜单数据
     # , headers = HEADERS
     response =  requests.get(TMDB_TOP_URL , timeout=60)
+    print("发送请求 获取TMDB电影榜单数据")
 
     # 2.解析数据 获取电影列表
     document =  html.fromstring(response.text)
@@ -115,8 +123,10 @@ def main():
             # print(movie_info_url)
             # 发送请求 获取电影详情数据
             movie_info = get_movie_info(movie_info_url)
+            all_movies.append(movie_info)
 
     # 4.保存数据 保存为csv文件
+    print("获取到所有的电影详情 保存到电影数据到CSV文件")
     save_all_movies(all_movies)
 
 if __name__ == '__main__':
