@@ -6,7 +6,8 @@ from urllib3.filepost import writer
 # 常量(在python中，一般定义为全部字母大写)
 MOVIE_LIST_FILE = "csv_data/movie_list.csv"
 TMDB_BASE_URL = "https://www.themoviedb.org"
-TMDB_TOP_URL = "https://www.themoviedb.org/movie/top-rated"
+TMDB_TOP_URL_1 = "https://www.themoviedb.org/movie/top-rated" # 高分电影榜单的url(第一页)
+TMDB_TOP_URL_2 = "https://www.themoviedb.org/discover/movie/items" # 高分电影榜单的url(第二页之后)
 
 # # 设置伪装请求头（模拟真实浏览器）
 # HEADERS = {
@@ -104,26 +105,33 @@ def save_all_movies(all_movies):
 
 # 主函数 定义核心逻辑
 def main():
-    # 1.发送请求 获取高分电影榜单数据
-    # , headers = HEADERS
-    response =  requests.get(TMDB_TOP_URL , timeout=60)
-    print("发送请求 获取TMDB电影榜单数据")
+    # 循环获取电影列表(第一页到第五页)
+    all_movies = []     # 保存所有电影数据
+    for page_num in range(1, 6):
+        if page_num == 1:
+            # 1.发送请求 获取高分电影榜单数据
+            response = requests.get(TMDB_TOP_URL_1, timeout=60)
+        else:
+            # 1.发送请求 获取高分电影榜单数据
+            response = requests.post(TMDB_TOP_URL_2,
+            f"air_date.gte=&air_date.lte=&certification=&certification_country=CN&debug=&first_air_date.gte=&first_air_date.lte=&include_adult=false&include_softcore=false&latest_ceremony.gte=&latest_ceremony.lte=&page={page_num}&primary_release_date.gte=&primary_release_date.lte=&region=&release_date.gte=&release_date.lte=2026-12-13&show_me=everything&sort_by=vote_average.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=300&watch_region=CN&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400"
+            ,timeout=60)
+        print(f"发送请求 访问第{page_num}页数据 获取TMDB电影榜单数据")
 
-    # 2.解析数据 获取电影列表
-    document =  html.fromstring(response.text)
-    movie_list = document.xpath("/html/body/div[1]/main/section/div/div/div/div[2]/div[2]/div/section/div/div/div[1]/div/div[@class='comp:poster-card w-full bg-white border border-light-grey hover:border-gray-300 rounded-lg shadow-lg overflow-hidden']")
-    # print(movie_list)
-    # 3.遍历电影列表 获取电影详情
-    all_movies = []
-    for movie in movie_list:
-        movie_urls = movie.xpath("./div/div/a/@href")
-        if movie_urls:
-            # 电影详情的url
-            movie_info_url = TMDB_BASE_URL + movie_urls[0]
-            # print(movie_info_url)
-            # 发送请求 获取电影详情数据
-            movie_info = get_movie_info(movie_info_url)
-            all_movies.append(movie_info)
+        # 2.解析数据 获取电影列表
+        document = html.fromstring(response.text)
+        movie_list = document.xpath(f"//*[@id='page_{page_num}']//div[contains(@class, 'poster-card')]")
+        # print(movie_list)
+        # 3.遍历电影列表 获取电影详情
+        for movie in movie_list:
+            movie_urls = movie.xpath("./div/div/a/@href")
+            if movie_urls:
+                # 电影详情的url
+                movie_info_url = TMDB_BASE_URL + movie_urls[0]
+                # print(movie_info_url)
+                # 发送请求 获取电影详情数据
+                movie_info = get_movie_info(movie_info_url)
+                all_movies.append(movie_info)
 
     # 4.保存数据 保存为csv文件
     print("获取到所有的电影详情 保存到电影数据到CSV文件")
