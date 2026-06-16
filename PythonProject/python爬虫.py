@@ -30,8 +30,62 @@ HEADERS = {
     "Sec-Ch-UA-Platform": '"Windows"',
 }
 
+# 获取电影详情
 def get_movie_info(movie_info_url):
-    pass
+    # 1.发送请求 获取电影详情数据
+    response = requests.get(movie_info_url , headers=HEADERS , timeout=60)
+    print(f"发送请求{movie_info_url} 获取电影详情数据")
+
+    # 2.解析数据 获取电影详情
+    movie_doc = html.fromstring(response.text)
+
+    # 电影名称
+    movie_name = movie_doc.xpath("//*[@id='content']/h1/span[1]")
+
+    # 电影年份
+    movie_year = movie_doc.xpath("//*[@id='content']/h1/span[2]")
+
+    # 上映时间
+    movie_Release_date = movie_doc.xpath("//*[@id='info']/span[10]")
+
+    # 类型
+    movie_type = movie_doc.xpath("//*[@id='info']/span[@property='v:genre']")
+
+    # 时长
+    movie_duration = movie_doc.xpath("//*[@id='info']/span[13]")
+
+    # 评分
+    movie_rating = movie_doc.xpath("//*[@id='interest_sectl']/div[1]/div[2]/strong")
+
+    # 语言
+    movie_language = movie_doc.xpath("//*[@id='info']/text()[3]")
+
+    # 导演
+    movie_director = movie_doc.xpath("//*[@id='info']/span[1]/span[2]/a")
+
+    # 作者
+    movie_author = movie_doc.xpath("//*[@id='info']/span[2]/span[2]/a/text()")
+
+    # 主演
+    movie_lead_actor = movie_doc.xpath("//*[@id='info']/span[3]/span[2]/span/a/text()")
+
+    # Slogan
+    # movie_slogan = movie_doc.xpath("//*[@id='link-report-intra']/span[1]/span")
+
+    # 简介
+    movie_introduction = movie_doc.xpath("//*[@id='link-report-intra']/span[1]/span")
+
+    print(movie_name)
+    print(movie_year)
+    print(movie_Release_date)
+    print(movie_type)
+    print(movie_duration)
+    print(movie_rating)
+    print(movie_language)
+    print(movie_director)
+    print(movie_author)
+    print(movie_lead_actor)
+    print(movie_introduction)
 
 
 def save_all_movies(all_movies):
@@ -55,7 +109,7 @@ def main():
     for movie in movie_list:
         movie_url = movie.xpath("./div[@class='pic']/a/@href")
         if movie_url:
-            movie_info_url = DOUBAN_BASE_URL + movie_url[0]
+            movie_info_url =  movie_url[0]
             print("返回的地址为：",movie_info_url)
 
             # 构造函数get_movie_info() 获取电影数据
