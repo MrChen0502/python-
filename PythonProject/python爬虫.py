@@ -16,12 +16,12 @@ DOUBAN_TOP_URL_1 = "https://movie.douban.com/top250" # 高分电影榜单的url(
 
 # 伪装请求头 防止封IP不让访问
 # # 设置伪装请求头（模拟真实浏览器）
-# 更强的伪装请求头
+# 更强地伪装请求头
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-    "Accept-Encoding": "identity",
+    # "Accept-Encoding": "identity",
     "Referer": "https://www.douban.com/",
     "Connection": "keep-alive",
     "Upgrade-Insecure-Requests": "1",
@@ -35,6 +35,13 @@ def get_movie_info(movie_info_url):
     # 1.发送请求 获取电影详情数据
     response = requests.get(movie_info_url , headers=HEADERS , timeout=60)
     print(f"发送请求{movie_info_url} 获取电影详情数据")
+    print(f"状态码: {response.status_code}")  # 👈 看是否成功
+    print(f"响应长度: {len(response.text)}")
+
+    # 保存返回内容，看看是什么
+    with open("debug_response.html", "w", encoding="utf-8") as f:
+        f.write(response.text)
+    print("已保存 debug_response.html，请打开查看")
 
     # 2.解析数据 获取电影详情
     movie_doc = html.fromstring(response.text)
@@ -98,10 +105,11 @@ def main():
     # 发送请求
     response = requests.get(DOUBAN_TOP_URL_1 , headers=HEADERS , timeout=60)
     # 使用随机等待1-3秒 模拟人类浏览器
-    time.sleep(random.randint(1,3))
+    time.sleep(random.randint(3,6))
 
     # 2.解析数据 获取电影列表
-    document = html.fromstring(response.content)
+    document = html.fromstring(response.text)
+    print(document)
 
     movie_list = document.xpath("//div[@class='item']")
     print(movie_list)
@@ -109,7 +117,7 @@ def main():
     for movie in movie_list:
         movie_url = movie.xpath("./div[@class='pic']/a/@href")
         if movie_url:
-            movie_info_url =  movie_url[0]
+            movie_info_url =   movie_url[0]
             print("返回的地址为：",movie_info_url)
 
             # 构造函数get_movie_info() 获取电影数据
