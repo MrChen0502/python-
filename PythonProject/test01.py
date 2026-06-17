@@ -18,6 +18,9 @@ headers = {
     "Referer": "https://quotes.toscrape.com"
 }
 
+# 获取名言详情
+def get_scrapes_info(scrapes):
+
 
 # 主函数
 def main():
@@ -30,7 +33,21 @@ def main():
 
     # 解析数据 获取名言
     document = html.fromstring(response.content)
-    print(document)
+    # print(document)
+
+    scrapes = document.xpath("//div[@class='quote']")
+    print(scrapes)
+
+    # 循环遍历 把所有名言添加进数组
+
+    for scrape in scrapes:
+        scrapes = scrape.xpath("./span[@class='text']/text()")
+
+        # 发送请求 解析作者和标签
+        all_scrapes = get_scrapes_info(scrapes)
+
+        all_Scrape.append(scrapes)
+    print(all_Scrape)
     pass
 
 
