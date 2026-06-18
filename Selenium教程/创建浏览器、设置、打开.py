@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.edge.options import Options          # 用于设置 Edge 配置
 from selenium.webdriver.edge.service import Service
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from selenium.webdriver.common.by import By         #元素定位导包
 
 # 设置浏览器、启动浏览器
 def she(url):
@@ -33,8 +34,19 @@ print(a1.title)
 # a1.quit()
 
 # 浏览器最大化
-time.sleep(2)
-a1.maximize_window()    # 最大化
-time.sleep(2)
-a1.minimize_window()    # 最小化
+# time.sleep(2)
+# a1.maximize_window()    # 最大化
+# time.sleep(2)
+# a1.minimize_window()    # 最小化
 
+
+# 浏览器打开位置、尺寸
+# a1.set_window_position(200,200)         #位置
+#
+# a1.set_window_size(1920,1080)    #尺寸
+
+# 浏览器截图
+a1.get_screenshot_as_file('1.png')
+
+# 浏览器刷新当前网页
+a1.refresh()
