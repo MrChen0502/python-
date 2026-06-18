@@ -26,9 +26,15 @@ print(a1.title)
 # a1.get("https://www.baidu.com")
 
 # 关闭标签页
-time.sleep(2)
-a1.close()
+# time.sleep(2)
+# a1.close()
 
 # 退出浏览器(关闭所有标签页)
-a1.quit()
+# a1.quit()
+
+# 浏览器最大化
+time.sleep(2)
+a1.maximize_window()    # 最大化
+time.sleep(2)
+a1.minimize_window()    # 最小化
 
