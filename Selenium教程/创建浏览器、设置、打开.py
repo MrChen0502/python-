@@ -112,10 +112,10 @@ if __name__ == '__main__':
     # 元素定位-xpath
     # 完整路径（定位值比较长 但是100%准确）
     # 相对路径 （属性如果是随机的 可能定位不到）
-    a1.find_element(By.XPATH, "/html/body/div/div/div[3]/div/div[1]/form/span[1]/input").click()
-    # 退出浏览器(关闭所有标签页)
-    time.sleep(5)
-    a1.quit()
+    # a1.find_element(By.XPATH, "/html/body/div/div/div[3]/div/div[1]/form/span[1]/input").click()
+    # # 退出浏览器(关闭所有标签页)
+    # time.sleep(5)
+    # a1.quit()
 
 
 
@@ -135,6 +135,27 @@ if __name__ == '__main__':
     # 元素点击
     # a2.click()
 
+
+    # 元素定位隐性等待（多少秒内找到元素就立即执行，没找到就报错）
+    a1.implicitly_wait(10)
+    a1.find_element(By.XPATH, "/html/body/div/div/div[3]/div/div[1]/form/span[1]/input").click()
+    # 退出浏览器(关闭所有标签页)
+    time.sleep(5)
+    a1.quit()
+
+
+
+    # 以下代码仅做演示 不做实际效果
+    # 获取全部标签页句柄
+    a2 = a1.window_handles
+
+    a1.close()
+
+    # 通过句柄切换标签页
+    a1.switch_to.window(a2[1])
+    # 获取当前标签页句柄
+    a2 = a1.current_window_handle
+    print(a2)
 
 
 
