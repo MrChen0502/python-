@@ -105,7 +105,7 @@ def main():
     # 发送请求
     response = requests.get(DOUBAN_TOP_URL_1 , headers=HEADERS , timeout=60)
     # 使用随机等待1-3秒 模拟人类浏览器
-    time.sleep(random.randint(3,6))
+    time.sleep(random.randint(1,3))
 
     # 2.解析数据 获取电影列表
     document = html.fromstring(response.text)
@@ -115,6 +115,7 @@ def main():
     print(movie_list)
 
     for movie in movie_list:
+        time.sleep(5)
         movie_url = movie.xpath("./div[@class='pic']/a/@href")
         if movie_url:
             movie_info_url =   movie_url[0]

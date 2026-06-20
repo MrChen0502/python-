@@ -147,15 +147,25 @@ if __name__ == '__main__':
 
     # 以下代码仅做演示 不做实际效果
     # 获取全部标签页句柄
-    a2 = a1.window_handles
+    # a2 = a1.window_handles
+    #
+    # a1.close()
+    #
+    # # 通过句柄切换标签页
+    # a1.switch_to.window(a2[1])
+    # # 获取当前标签页句柄
+    # a2 = a1.current_window_handle
+    # print(a2)
 
-    a1.close()
 
-    # 通过句柄切换标签页
-    a1.switch_to.window(a2[1])
-    # 获取当前标签页句柄
-    a2 = a1.current_window_handle
-    print(a2)
+    # 获取弹窗的文本内容
+    print(a1.switch_to.alert.text)
+    #
+    time.sleep(5)
+    # 点击弹窗确定按钮
+    a1.switch_to.alert.accept()
+
+
 
 
 
