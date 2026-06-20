@@ -24,7 +24,7 @@ def she(url):
 
 
 if __name__ == '__main__':
-    a1 = she("https://www.baidu.com")
+    a1 = she("https://www.baidu.com/")
     print(a1.title)
     # a1.get("https://www.baidu.com")
 
@@ -57,21 +57,84 @@ if __name__ == '__main__':
     # 元素定位-ID
     # 1.通过ID定位元素 一般般都比较准确
     # 2.并不是所有网页或者元素 都有ID值
-    a2 = a1.find_element(By.ID, "kw")
-    #
+    # a2 = a1.find_element(By.ID, "kw")
+
+    # 元素定位-NAME
+    # 1.通过name定位元素，一般比较准确。
+    # 2.并不是所有网页或者元素 都有name值
+    # a1.find_element(By.NAME, "wd").send_keys("python")
+
+    # 元素定位-CLASS_NAME
+    # 1.class值不能有空格 否则报错
+    # 2.class值重复的有很多 需要切片
+    # a1.find_elements(By.CLASS_NAME, "channel-icons__item")[1].click()
+
+    # 元素定位—TAG_NAME
+    # 1.查找<开头标名字>
+    # 2.重复的标签名字特别多，需要切片
+    # a1.find_elements(By.TAG_NAME, "a")[0].click()
+    # time.sleep(5)
+    # # 退出浏览器(关闭所有标签页)
+    # a1.quit()
+
+    # 元素定位-LINK_TEXT
+    # 通过精准链接文本找到a标签的元素
+    # 用重复的文本 需要切片
+    # a1.find_element(By.LINK_TEXT, "新闻").click()
+    # # 退出浏览器(关闭所有标签页)
+    # time.sleep(5)
+    # a1.quit()
+
+    # 元素定位-PARTIAL_LINK_TEXT
+    # 通过模糊链接文本找到a标签的元素
+    # 用重复的文本 需要切片
+    # a1.find_element(By.PARTIAL_LINK_TEXT, "新闻").click()
+    # # 退出浏览器(关闭所有标签页)
+    # time.sleep(5)
+    # a1.quit()
+
+    # 元素定位-CSS_SELECTOR
+    # 1.#id = 井号+id值 通过id定位
+    # 2. .class = 点 + class值 通过class定位
+    # 3. 不加修饰符 = 标签头
+    # 4.1 通过任意类型定位: "[类型='精准值']"
+    # 4.2 通过任意类型定位: "[类型*='模糊值']"
+    # 4.3 通过任意类型定位: "[类型^='开头值']"
+    # 4.4 通过任意类型定位: "[类型$='结尾值']"
+    # 以上这些方法都属于理论定位法
+
+    # 5.更简单的定位方式 在浏览器控制台直接复制相对应的SELECTOR
+    # a1.find_elements(By.CSS_SELECTOR, "[autocomolete='off']")[7].send_keys("python")
+    # # 退出浏览器(关闭所有标签页)
+    # time.sleep(5)
+    # a1.quit()
+
+    # 元素定位-xpath
+    # 完整路径（定位值比较长 但是100%准确）
+    # 相对路径 （属性如果是随机的 可能定位不到）
+    a1.find_element(By.XPATH, "/html/body/div/div/div[3]/div/div[1]/form/span[1]/input").click()
+    # 退出浏览器(关闭所有标签页)
+    time.sleep(5)
+    a1.quit()
+
+
+
+
+
     # # 定位多个元素(找到的话返回列表形式、找不到的话返回空列表)
     # a1.find_elements(By.ID, "kw")
 
     # 元素输入
-    a2.send_keys("python")
-    # 元素清空
-    time.sleep(2)
-    a2.clear()
-
-    a2 = a1.find_element(By.ID, "su")
+    # a2.send_keys("python")
+    # # 元素清空
+    # time.sleep(2)
+    # a2.clear()
+    #
+    # a2 = a1.find_element(By.ID, "su")
 
     # 元素点击
     # a2.click()
+
 
 
 
